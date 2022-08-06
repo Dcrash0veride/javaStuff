@@ -1,0 +1,36 @@
+import java.util.Scanner;
+
+/*
+Fib number seq is defined by a function F(n) which accepts an integer and
+returns an integer
+The function is defined the following way
+f(n) = 0; if n ==0
+f(n) = 1; if n==1
+f(n) = f(n-1) + f(n-2) otherwise
+implement a recursive function private static int F(int n) which computes
+the n-th fib number using the function def above
+
+Input = The first line of input contains T: The number of test cases. T test cases follow
+Each test case is a single integer number N: the number to call the f function
+
+output = For reach test case output one line containing Case #x: y, where x is the test
+case number (starting at 1) and y is the corresponding fib number
+ */
+public class fibNum {
+
+    private static int F(int n) {
+        if (n <= 1) {
+            return n;
+        } else {
+            return F(n-1) + F(n -2);
+        }
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        for (int i = 1; i <= T; i++){
+            int n = sc.nextInt();
+            System.out.println(F(n));
+        }
+    }
+}
