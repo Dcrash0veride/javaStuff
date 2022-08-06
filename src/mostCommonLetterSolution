@@ -1,0 +1,63 @@
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+/*
+Write a function that takes in a string and returns the most common letter in that string. For example,
+if the input is "hello", return the character 'L'. If there are multiple letters with the same frequency
+return the one that appears in the string first
+
+Input - The first line of the input contains T: the number of test cases. T test cases follow.
+
+Output - For each test case, output one line containing Case #x: y, where X is the
+test case number starting from 1 and y is the most common letter.
+
+Module hashMap/Hashset
+
+
+ */
+
+public class MostCommonLetterSolution {
+
+    public static String mostCommon(String input) {
+        HashMap<String, Integer> letters = new HashMap<String, Integer>();
+        for (int c = 0; c < input.length(); c++) {
+            if (!letters.containsKey(String.valueOf(input.charAt(c)))) {
+                letters.put(String.valueOf(input.charAt(c)), 1);
+            } else {
+                Integer count = letters.get(String.valueOf(input.charAt(c)));
+                letters.put(String.valueOf(input.charAt(c)), count + 1);
+            }
+        }
+        int maxValue = (Collections.max(letters.values()));
+        ArrayList<String> winners = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : letters.entrySet()) {
+            if (entry.getValue() == maxValue) {
+                winners.add(String.valueOf(entry.getKey()));
+            }
+        }
+        if (winners.size() > 1) {
+            for (int c = 0; c < input.length(); c++) {
+                if (winners.contains(String.valueOf(input.charAt(c)))) {
+                    return String.valueOf(input.charAt(c));
+                }
+            }
+        } else {
+            return winners.get(0);
+        }
+        return "what?";
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int TestCases = sc.nextInt();
+        for (int i = 1; i <= TestCases; i++) {
+            String word = sc.next();
+            String myVar = mostCommon(word);
+            System.out.print("Case #" + i + " " + myVar);
+            System.out.println(" ");
+        }
+    }
+}
