@@ -1,0 +1,44 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+/*Input = The first line of input contains T: The number of test cases. T test cases follow
+        Each test case is a single integer number N: the number to call the f function
+
+        output = For reach test case output one line containing Case #x: y, where x is the test
+        case number (starting at 1) and y is the corresponding fib number
+
+        fast Fib with memoization technique (just gonna store previous calls in hashtable)
+*/
+public class fastFib {
+
+    private HashMap<Integer, Integer> fibCache = new HashMap<>();
+    public int  memoTable(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        if (this.fibCache.containsKey(n)) {
+            return this.fibCache.get(n);
+        }
+        int result = memoTable(n-1) + memoTable(n - 2);
+        this.fibCache.put(n, result);
+        return result;
+        }
+
+        public int F(int n) {
+        if (n <= 1) {
+            return n;
+        } else {
+            return F(n -1) + F(n - 2);
+        }
+        }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        for (int i = 1; i <= T; i++){
+            int n = sc.nextInt();
+            fastFib myFastFib = new fastFib();
+            System.out.println(myFastFib.memoTable(n));
+        }
+    }
+}
