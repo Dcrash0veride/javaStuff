@@ -1,0 +1,118 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+/*
+An interleaving of two strings is a string composed of the characters in each
+of the input strings while preserving the order in which the characters
+appeared in the original strings. For example, "abc" and "123" can be
+interleaved as "a1b2c3" or "abc123" or "ab1c23" or other permutations
+Implement a function that prints out all the possible interleavings
+of two input strings without repeated characters. Each char from each input
+should appear exactly one time in the output but if a particular interleaving
+would result in identical neighboring chars you should not output the string
+
+Hints at Recursion
+*** I had to look up information about this, my method in general is to brute
+force the planet ***
+
+preserving the order wasn't something I considered in my first implementation
+and went with a standard swap on indexes which obviously did not preserve order
+I had to do some googling and shoehorn some extra stuff into what I found
+
+*********************************************************************************************
+*********************************************************************************************
+*********************************************************************************************
+So I didn't read the instructions well enough and I googled too much for this.
+I did not understand this code. Once I found an article about recursive interleaving
+I was able to add an additional check to not generate the permutation. I didn't understand
+how the call was generating multiple return values until I drew out the stack.
+
+With that said I kinda understand recursion now. I'm familiar with the fib and factorial
+versions and I did submit a fastFib to codeJam, but after reading the instructions more
+thoroughly I can't say I completed this without Googling for a near enough solution to feel
+icky.
+
+Anything that can be solved recursively can be solved iteratively so I will do that
+and keep that code uncommented.
+
+^^^ I was young and naive when I wrote that. I am now a withered shell of who I used to be(yesterday)
+I have been unable to generate an iterative solution that preserves order.
+
+ */
+
+
+//public class Task2 {
+//
+//    public static void interWeaveEm(String s1, int i, String s2, int j, String soFar) {
+//
+//        // if indexes are equal to string length we have a new word
+//        if (i == s1.length() && j == s2.length()) {
+//            System.out.println(soFar);
+//        }
+//
+//        // if I index less than string1 length permutate and append
+//        if (i < s1.length())
+//            // check for consecutive chars and pass if consecutive char detected
+//            if ( !soFar.isEmpty() && soFar.charAt(soFar.length() -1) == s1.charAt(i)) {
+//            } else {
+//                interWeaveEm(s1, i + 1, s2, j, soFar + s1.charAt(i));
+//            }
+//        // check for consecutive chars and pass if true
+//        if (j < s2.length()) {
+//            if ( !soFar.isEmpty() && soFar.charAt(soFar.length() -1) == s2.charAt(j)) {
+//            } else {
+//                interWeaveEm(s1, i, s2, j + 1, soFar + s2.charAt(j));
+//            }
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        Scanner sc = new Scanner(System.in);
+//        String firstIn = sc.next();
+//        String secondIN = sc.next();
+//        interWeaveEm(firstIn, 0, secondIN, 0, "");
+//    }
+//}
+
+// I tested my other stuff and I tested this too, but only for completeness sakes. Again according to the rules I'm a cheater :(
+
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4511:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar Task2
+abc
+123
+abc123
+ab1c23
+ab12c3
+ab123c
+a1bc23
+a1b2c3
+a1b23c
+a12bc3
+a12b3c
+a123bc
+1abc23
+1ab2c3
+1ab23c
+1a2bc3
+1a2b3c
+1a23bc
+12abc3
+12ab3c
+12a3bc
+123abc
+
+Process finished with exit code 0
+
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4518:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar Task2
+abc
+cab
+abcacb
+abcabc
+acbcab
+acbacb
+acbabc
+acabcb
+cabcab
+cabacb
+cababc
+cababc
+
+Process finished with exit code 0
