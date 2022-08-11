@@ -1,0 +1,240 @@
+import java.util.*;
+import java.util.Collection;
+/*
+A hierarchy can be represented by an array of parent/child pairs. Trees.
+Example:
+[[dog, poodle], [dog,pomeranian], [feline, cat] [cat, persian]
+[canine, dog] [canine, wolf], [mammal, feline] [mammal, canine]
+[reptile, crocodile], [feline, jaguar], [reptile, iguana], [feline, lion]
+[mammal, monotreme], [dog, st.bernard] [reptile, turtle]
+
+parents = dog,2, feline,1 cat,2 canine,1 mammal,0 reptile 0
+
+Every node can only have one parent (tree requirement I think)
+There may or may not be a single ancestor to all the nodes ([animal, reptile][animal, mammal]
+The pairs are specified in an unpredictable order
+
+Write a function that takes these string pairs as input and returns a sorted list of all
+the srings that occur on the most crowded level of any of the resulting trees.
+
+
+Approach, split tuples into two lists of parents and children
+Root Parents are parents that never appear as children
+After getting the root parents look for second level parents by find
+items in tuples with root parents in parent spot
+Repeat for each level until out of levels.
+
+After that the relationships are established and I need to populate the children and see who has the most
+crowded level
+
+ */
+
+public class animalKingdom {
+
+    public static String[] tupleMaker(String parent, String child) {
+        String[] tempTuple = new String[2];
+        tempTuple[0] = parent;
+        tempTuple[1] = child;
+        return tempTuple;
+    }
+
+    public static ArrayList<String> rootFinder(ArrayList<String[]> List) {
+        // Split list into left and right <parents> children
+        ArrayList<String> parents = new ArrayList<>();
+        ArrayList<String> children = new ArrayList<>();
+        for (int p = 0; p < List.size(); p++) {
+            parents.add(List.get(p)[0]);
+            children.add(List.get(p)[1]);
+        }
+        // find root parents by seeing which nodes are never children
+        parents.removeAll(children);
+        ArrayList<String> rootNodes = new ArrayList<>();
+        for (int x = 0; x < parents.size(); x++) {
+            if (!rootNodes.contains(parents.get(x))) {
+                rootNodes.add(parents.get(x));
+            }
+        }
+        return rootNodes;
+    }
+
+    public static ArrayList<String> childrenOfTheKsh(ArrayList<String[]> list, String parentNode) {
+        ArrayList<String> children = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i)[0].equals(parentNode)) {
+                children.add(list.get(i)[1]);
+            }
+        }
+        return children;
+
+    // If I can use childrenFinder recursively this is solved
+//    public static ArrayList<String> childrenFinder(ArrayList<String[]> List, String parentNode) {
+//        // Pass in A PARENT NODE and find all children of that node
+//        ArrayList<String> progenyOf = new ArrayList<>();
+//        for (int count = 0; count < List.size(); count++) {
+//            if (List.get(count)[0].equals(parentNode)) {
+//                progenyOf.add(List.get(count)[1]);
+//            }
+//        }
+//        return progenyOf;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String[]> myList = new ArrayList<>();
+        while (sc.hasNext()) {
+            String daenrysFirstofMyName = sc.next();
+            if (daenrysFirstofMyName.equals("exit")) {
+                break;
+            } else {
+                String secondStringQB = sc.next();
+                myList.add(tupleMaker(daenrysFirstofMyName, secondStringQB));
+            }
+        }
+        // Once list is populated I can find the rootNodes
+        int level = 1;
+        ArrayList<String> roots = rootFinder(myList);
+        for (int s = 0; s < roots.size(); s++) {
+        }
+        level++;
+        ArrayList<String> rootChilds = new ArrayList<>();
+        for (int r = 0; r < roots.size(); r++) {
+            ArrayList<String> newKidsOnTheBlock = childrenOfTheKsh(myList, roots.get(r));
+            for (int x = 0; x < newKidsOnTheBlock.size(); x++) {
+                rootChilds.add(newKidsOnTheBlock.get(x));
+            }
+        }
+
+        level++;
+        ArrayList<String> grandBabies = new ArrayList<>();
+        if (!rootChilds.isEmpty()) {
+            for (int v = 0; v < rootChilds.size(); v++) {
+                ArrayList<String> tempHousing = childrenOfTheKsh(myList, rootChilds.get(v));
+                for (int k = 0; k < tempHousing.size(); k++) {
+                    grandBabies.add(tempHousing.get(k));
+                }
+            }
+        }
+
+        level++;
+        ArrayList<String> greatGrandBabies = new ArrayList<>();
+        if (!grandBabies.isEmpty()) {
+            for (int g = 0; g < grandBabies.size(); g++) {
+                ArrayList<String> tempHousing = childrenOfTheKsh(myList, grandBabies.get(g));
+                for (int b = 0; b < tempHousing.size(); b++) {
+                    greatGrandBabies.add(tempHousing.get(b));
+                }
+            }
+        }
+        level++;
+        ArrayList<String> greatGreatYouGetThePointICantBelieveIveDoneThis = new ArrayList<>();
+        if (!greatGrandBabies.isEmpty()) {
+            for (int ggb = 0; ggb < greatGrandBabies.size(); ggb++) {
+                ArrayList<String> tempHousing = childrenOfTheKsh(myList, greatGrandBabies.get(ggb));
+                for (int b = 0; b < tempHousing.size(); b++) {
+                    greatGreatYouGetThePointICantBelieveIveDoneThis.add(tempHousing.get(b));
+                }
+            }
+        }
+        level++;
+        // I Can now compare all of the list sizes and sort the biggest list lexicopgrahically
+        // This is out of desperation. I want to make sure the stuff I turn in works, but also need to work on other things..like a resume.
+        if (roots.size() >= rootChilds.size() && roots.size() >= grandBabies.size() &&
+        roots.size() >= greatGrandBabies.size() && roots.size() >= greatGreatYouGetThePointICantBelieveIveDoneThis.size()) {
+            Collections.sort(roots);
+            System.out.println(roots);
+        } else if (rootChilds.size() >= grandBabies.size() && rootChilds.size() >= greatGrandBabies.size() &&
+        rootChilds.size() >= greatGreatYouGetThePointICantBelieveIveDoneThis.size()) {
+            Collections.sort(rootChilds);
+            System.out.println(rootChilds);
+        } else if (grandBabies.size() >= greatGrandBabies.size() && grandBabies.size() >= greatGreatYouGetThePointICantBelieveIveDoneThis.size()) {
+            Collections.sort(grandBabies);
+            System.out.println(grandBabies);
+        } else if (greatGrandBabies.size() >= greatGreatYouGetThePointICantBelieveIveDoneThis.size()) {
+            Collections.sort(greatGrandBabies);
+            System.out.println(greatGrandBabies);
+        } else {
+            Collections.sort(greatGreatYouGetThePointICantBelieveIveDoneThis);
+            System.out.println(greatGreatYouGetThePointICantBelieveIveDoneThis);
+        }
+    }
+}
+
+
+// Wrong answer I treated the two trees as as being a part of the same problem should have studied trees more before trying this
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4482:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar animalKingdom
+dog
+poodle
+dog
+pomeranian
+feline
+cat
+cat
+persian
+canine
+dog
+canine
+wolf
+mammal
+feline
+mammal
+canine
+reptile
+crocodile
+feline
+jaguar
+reptile
+iguana
+feline
+lion
+mammal
+monotreme
+dog
+st.bernard
+reptile
+turtle
+exit
+[canine, crocodile, feline, iguana, monotreme, turtle]
+
+Process finished with exit code 0
+
+// Second test passes because it's the same output as the first test and the first test returns what is on the most crowded level inclusive of all trees soo..
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4490:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar animalKingdom
+dog
+poodle
+dog
+pomeranian
+feline
+cat
+cat
+persian
+canine
+dog
+canine
+wolf
+mammal
+feline
+mammal
+canine
+reptile
+crocodile
+feline
+jaguar
+reptile
+iguana
+feline
+lion
+mammal
+monotreme
+dog
+st.bernard
+reptile
+turtle
+animal
+reptile
+animal
+mammal
+exit
+[canine, crocodile, feline, iguana, monotreme, turtle]
+
+
+
