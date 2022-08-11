@@ -1,0 +1,114 @@
+import java.util.Arrays;
+import java.util.regex.*;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+
+/*
+Given an array of strings, write a function that returns three strings: the
+string with the most consonants, the string with the most vowels and the
+string with the most characters that are neither vowels nor consonants.
+You can assume only ascii characters in the input strings. For simplicity,
+we'll consider "aeiouy" to be the only vowels for this exercise and
+ignore accented letters.
+If two words are tied for one of these criteria, return the word that would
+appear first in the dictionary (Lower lexicographic order)
+
+My notes: This program will take user input and output the desired effect.
+I can't pass an array when using scanner so I build one (technically an arrayList
+because I don't know the number of inputs). Not sure if this is
+desired.
+ */
+public class Solutions {
+
+    public static String anotherOne(String regex, ArrayList<String> words) {
+        String winningWord = "";
+        for (int w = 0; w < words.size(); w++) {
+            if (countMatches(regex, words.get(w)) > countMatches(regex, winningWord)) {
+                winningWord = words.get(w);
+            } else if (countMatches(regex, words.get(w)) == countMatches(regex, winningWord)) {
+                winningWord = whoWon(words.get(w), winningWord);
+            }
+
+        }
+        return winningWord;
+    }
+    public static int countMatches(String regex, String input) {
+        Pattern myPattern = Pattern.compile(regex);
+        Matcher myMatcher = myPattern.matcher(input);
+        int count = 0;
+        while (myMatcher.find()) {
+            count++;
+        }
+        return count;
+    }
+
+    public static String whoWon(String s1, String s2) {
+        if (s2.isEmpty()) {
+            return s1;
+        }
+        int result = s1.compareTo(s2);
+        if (result < 0) {
+            return s1;
+        }
+        else {
+            return s2;
+        }
+    }
+
+    // I need to write a function that does the checking for me. I don't like the big block
+    public static void main(String[] args) {
+
+        // Define Things I need to make this work
+        // Array to hold the 3 string answer
+        String[] myArray = new String[3];
+
+        // ArrayList for dynamic sizing
+        ArrayList<String> inFromIn = new ArrayList<>();
+
+        // Vowel regex lower and upper since I don't know case
+        String re1 = "[aeiouyAEIOUY]";
+
+        // Consonant regex
+        String re2 = "[bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ]";
+
+        // Neither vowel nor consonant regex
+        String re3 = "[^abcdefghijklmnopqrstuvwxyz" +
+                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ]";
+
+        // Init several values related to the current regex match count leader and respective index
+        Scanner sc = new Scanner(System.in);
+
+        // Populate arraylist
+        while (sc.hasNext()) {
+            String in = sc.nextLine();
+            if (in.equals("exit")) {
+                break;
+            } else {
+                inFromIn.add(in);
+            }
+        }
+
+        myArray[0] = anotherOne(re2, inFromIn);
+        myArray[1] = anotherOne(re1, inFromIn);
+        myArray[2] = anotherOne(re3, inFromIn);
+        System.out.println(Arrays.toString(myArray));
+    }
+}
+
+
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4404:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar Solutions
+strengths
+ant 1
+turkey
+facetious
+exit
+[strengths, facetious, ant 1]
+
+Process finished with exit code 0
+
+C:\Users\dcrash0veride\.jdks\openjdk-18.0.2\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\lib\idea_rt.jar=4456:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\dcrash0veride\IdeaProjects\gdaTA\out\production\gdaTA;C:\Users\dcrash0veride\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\dcrash0veride\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar Solutions
+cat
+oat
+exit
+[cat, oat, cat]
