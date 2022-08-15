@@ -1,0 +1,165 @@
+public class NodeLL {
+    public int value;
+    public NodeLL next;
+
+    static class singlyLL {
+        public NodeLL head;
+        public NodeLL tail;
+        public int size;
+
+    public NodeLL createSLL(int nodeValue) {
+        head = new NodeLL();
+        NodeLL node = new NodeLL();
+        node.next = null;
+        node.value = nodeValue;
+        tail = new NodeLL();
+        head = node;
+        tail = node;
+        size = 1;
+        return head;
+    }
+
+    // Insertion Method in SLL
+    public void insertSLL(int nodeValue, int location) {
+        NodeLL node = new NodeLL();
+        node.value = nodeValue;
+        if (head == null) {
+            createSLL(nodeValue);
+            return;
+        } else if (location == 0) {
+            node.next = head;
+            head = node;
+        } else if (location >= size) {
+            node.next = null;
+            tail.next = node;
+            tail = node;
+        } else {
+            NodeLL tempNode = head;
+            int index = 0;
+            while (index < location - 1) {
+                tempNode = tempNode.next;
+                index++;
+            }
+            NodeLL nextNode = tempNode.next;
+            tempNode.next = node;
+            node.next = nextNode;
+        }
+        size++;
+    }
+
+    public void traverseSLL() {
+        if (head == null) {
+            System.out.println("SLL does not exist");
+        } else {
+            NodeLL tempNode = head;
+            for (int i = 0; i < size; i++) {
+                System.out.print(tempNode.value);
+                if (i != size - 1) {
+                    System.out.print("->");
+                }
+                tempNode = tempNode.next;
+            }
+        }
+        System.out.println(" ");
+    }
+
+    public int searchSLL(int nodeValue) {
+        if (head == null) {
+            System.out.println("No list to search dawg");
+        } else {
+            NodeLL tempNode = head;
+            for (int i = 0; i < size; i++) {
+                if (tempNode.value != nodeValue) {
+                    tempNode = tempNode.next;
+                } else {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        return -1;
+    }
+
+    public void deleteNodeSLL(int index) {
+        if (head == null) {
+            System.out.println("SLL does not exist");
+            return;
+        } else if ( index == 0) {
+            head = head.next;
+            size--;
+            if (size == 0) {
+                tail = null;
+            }
+        }
+        else if (index >= size) {
+            NodeLL tempNode = head;
+            for (int i = 0; i < size -1; i ++) {
+                tempNode = tempNode.next;
+            }
+            if (tempNode == head) {
+                tail = head = null;
+                size--;
+                return;
+            }
+            tempNode.next = null;
+            tail = tempNode;
+            size--;
+        } else {
+            NodeLL tempNode = head;
+            for (int i = 0; i < index -1; i++) {
+                tempNode = tempNode.next;
+            }
+            tempNode.next = tempNode.next.next;
+            size--;
+            return;
+        }
+}
+
+    public void deleteEntireSLL() {
+        head = null;
+        tail = null;
+    }
+}
+    
+    
+    public static void main(String[] args) {
+        singlyLL firstList = new singlyLL();
+        firstList.createSLL(5);
+        firstList.insertSLL(6, 1);
+        firstList.insertSLL(3, 3);
+        singlyLL secondList = new singlyLL();
+        secondList.insertSLL(23, 0);
+        firstList.traverseSLL();
+        System.out.println(firstList.searchSLL(6));
+        System.out.println(firstList.searchSLL(5));
+        System.out.println(firstList.searchSLL(3));
+        System.out.println(firstList.searchSLL(60));
+        System.out.println(firstList.head.value);
+        System.out.println(firstList.tail.value);
+        firstList.insertSLL(7, 3);
+        firstList.insertSLL(8, 4);
+        firstList.traverseSLL();
+        firstList.deleteNodeSLL(3);
+        firstList.traverseSLL();
+        firstList.deleteNodeSLL(0);
+        firstList.deleteNodeSLL(firstList.size - 1);
+        firstList.traverseSLL();
+        firstList.deleteEntireSLL();
+        firstList.traverseSLL();
+    }
+}
+
+
+java NodeLL
+5->6->3
+1
+0
+2
+-1
+5
+3
+5->6->3->7->8
+5->6->3->8
+6->3
+SLL does not exist
+
