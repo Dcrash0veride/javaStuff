@@ -8,6 +8,10 @@ import java.util.Scanner;
         case number (starting at 1) and y is the corresponding fib number
 
         fast Fib with memoization technique (just gonna store previous calls in hashtable)
+        
+        
+        ****PROTIP*** java int space is something like 2^31 so this doesn't work as implemented for N >= 50
+        Convert all int's to long and sc.nextInt to sc.nextLong and all is right with the world.********
 */
 public class fastFib {
 
