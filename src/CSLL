@@ -1,0 +1,176 @@
+
+/*
+What is a CSLL?
+This is a singly linked list where the last node (not tail) points to 
+the first node (not head)
+
+Diagram looks like head and tail are dummy nodes and I almost want to create
+a specific class for that, but alas.
+
+Anyways I think that is the only big difference and will go ahead and start
+to work on implementing this
+*/
+
+public class circularSLL {
+    public Node head;
+    public Node tail;
+    public int size;
+
+    static class Node {
+        public int value;
+        public Node next;
+        
+    }
+
+    public Node createCSLL(int nodeValue) {
+        head = new Node();
+        Node newNode = new Node();
+        newNode.value = nodeValue;
+        newNode.next = newNode;
+        head = newNode;
+        tail = newNode;
+        size++;
+        return head;
+    }
+
+    public void insertNode(int nodeValue, int location) {
+        Node newNode = new Node();
+        newNode.value = nodeValue;
+        if (head == null) {
+            createCSLL(nodeValue);
+            return;
+        } else if (location == 0) {
+            newNode.next = head;
+            head = newNode;
+            tail.next = head;
+        } else if (location >= size) {
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head;
+        } else {
+            Node tempNode = new Node();
+            tempNode = head;
+            int index = 0;
+            while ( index < location - 1) {
+                tempNode = tempNode.next;
+                index++;
+            }
+            newNode.next = tempNode.next;
+            tempNode.next = newNode;
+        }
+        size++;
+    }
+
+    public void traverseCSLL() {
+        if (head != null) {
+        Node tempNode = head;
+        for (int i =0; i < size; i++) {
+                System.out.print(tempNode.value);
+                tempNode = tempNode.next;
+                if (i != size -1) {
+                    System.out.print("->");
+            }
+        }
+    } else {
+        System.out.println("CSLL does not exist");
+    }
+    
+}
+
+    public void searchCSLL(int nodeValue) {
+        if (head == null) {
+            System.out.println("CSLL does not exist");
+            return;
+        } else {
+            Node tempNode = new Node();
+            tempNode = head;
+            for (int i = 0; i < size; i++) {
+                if (tempNode.value != nodeValue) {
+                    tempNode = tempNode.next;
+                } else {
+                    System.out.println("\n Node located at index " + String.valueOf(i));
+                    return;
+                }
+            }
+            System.out.println("Node value not found");
+            return;
+        }
+    }
+
+    public void deleteNodeCSLL(int location) {
+        if (head == null) {
+            System.out.println("No list y'all");
+            return;
+        } else if (location == 0) {
+            head = head.next;
+            tail.next = head;
+            size--;
+            if (size == 0) {
+                tail = null;
+                head.next = null;
+                head = null;
+            }
+        } else if (location >= size) {
+            Node tempNode = head;
+            for (int i = 0; i < size - 1; i++) {
+                tempNode = tempNode.next;
+            }
+            if (tempNode == head) {
+                head.next = null;
+                tail = head = null;
+                return;
+            }
+            tempNode.next = head;
+            tail = tempNode;
+            size--;
+        } else {
+            Node tempNode = head;
+            for (int i = 0; i < location -1; i++) {
+                tempNode = tempNode.next;
+            }
+            tempNode.next = tempNode.next.next;
+            size--;
+            return;
+        }
+    }
+
+    public void deleteCSLL() {
+        if (head == null) {
+            System.out.println("CSLL does not exist");
+        } else {
+        head = null;
+        tail.next = null;
+        tail = null;
+        System.out.println("CSLL has been dleeted");
+        }
+    }
+
+
+
+
+    public static void main(String[] args) {
+        circularSLL firstList = new circularSLL();
+        firstList.createCSLL(5);
+        System.out.println(firstList.head.value);
+        System.out.println(firstList.head.next.value);
+        firstList.insertNode(4, 0);
+        firstList.insertNode(3, 3);
+        firstList.insertNode(6, 1);
+        System.out.println(firstList.head.value);
+        System.out.println(firstList.head.next.value);
+        System.out.println(firstList.tail.next.value);
+        firstList.traverseCSLL();
+        firstList.searchCSLL(5);
+        firstList.searchCSLL(6);
+        firstList.deleteNodeCSLL(4);
+        firstList.traverseCSLL();
+        firstList.deleteNodeCSLL(0);
+        firstList.traverseCSLL();
+        firstList.deleteNodeCSLL(1);
+        System.out.println("\n");
+        firstList.traverseCSLL();
+        firstList.deleteCSLL();
+        firstList.traverseCSLL();
+
+    }
+}
